@@ -25,6 +25,14 @@ def transcribe_speech():
 
         except:
             return "Sorry, I did not get that."
+        
+# define a function to save the transcription
+def save_transcription(text):
+    if text:
+        with open("transcription.txt", "w") as file:
+            file.write(text)
+        st.success("Transcription saved to 'transcription.txt'.")
+
     
 # define the main function
 # that will handle the user interface of the app.
@@ -36,6 +44,16 @@ def main():
     if st.button("Start Recording"):
         text = transcribe_speech()
         st.write("Transcription: ", text)
+
+    # initialize session state variables
+    if "paused" not in st.session_state:
+        st.session_state.paused = False
+    if "transcription" not in st.session_state:
+        st.session_state.transcription = ""
+
+    # save transcription
+    if st.button("Save Transcription"):
+        save_transcription(st.session_state.transcription)
 
 if __name__ == "__main__":
 
